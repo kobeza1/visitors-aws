@@ -20,8 +20,12 @@ const handler = async (event) => {
   //   return Responses._400({ error: "This ID is already taken" });
   // }
 
-  const date = new Date().toString();
-  const writeData = { ...event.body, createDate: date };
+  // creating date at backend
+
+  // const date = new Date().toString();
+  // const writeData = { ...event.body, createDate: date };
+
+  // code before hooks
 
   // if (!ID || typeof ID !== "string") {
   //   return Responses._400({ error: "There must be ID and it must be string" });
@@ -32,13 +36,13 @@ const handler = async (event) => {
   //     return null;
   //   });
 
-  const newVisitor = await Dynamo.write(writeData, tableName);
+  const newVisitor = await Dynamo.write(event.body, tableName);
 
   if (!newVisitor) {
     return Responses._400({ message: "Failed to write a visitor by ID" });
   }
 
-  return Responses._200({ newVisitor: writeData });
+  return Responses._200({ newVisitor: event.body });
 };
 
 exports.handler = bodyValidation({ bodySchema })(handler);
